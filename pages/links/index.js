@@ -1,7 +1,9 @@
+import Layout from '../../components/Layout'
+
 export default function LinksPage() {
     return (
-        <div>
+        <Layout title='Übersicht'>
             <h1>Links</h1>
-        </div>
+        </Layout>
     )
 }

@@ -1,7 +1,14 @@
+import { useRouter } from "next/router"
+import Layout from '../../components/Layout'
+
 export default function EventPage() {
+
+    const router = useRouter() // react hook
+    console.log(router) 
+
     return (
-        <div>
-            <h1>Link XYZ</h1>
-        </div>
+        <Layout title="Details zu ">
+            <h1>Link details</h1>
+        </Layout>
     )
 }
