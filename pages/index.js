@@ -1,11 +1,27 @@
-import Link from 'next/link'
 import Layout from '@/components/Layout'
+import LinkItem from '@/components/LinkItem'
+import {API_URL} from '@/config/index'
 
-export default function HomePage() {
-  return (
-    <Layout>
-      <h1>Home</h1>
-      <Link href='/about'>About</Link>
-    </Layout>
-  )
+export default function LinksPage({links}) {
+    return (
+        <Layout title='Übersicht'>
+            <h1>Frische Links</h1>
+            {links.length === 0 && <h3>Bisher noch keine Links vorhanden. :(</h3>}
+            {links.map(link => (
+                <LinkItem key={link.id} link={link} />
+            ))}
+        </Layout>
+    )
+}
+
+export async function getStaticProps(){
+
+    const res = await fetch(`${API_URL}/api/links`)
+    const links = await res.json()
+    //console.log(links) // this will be printed on terminal (server side)
+
+    return{
+        props:{links:links.slice(0,3)},
+        revalidate: 1
+    }
 }

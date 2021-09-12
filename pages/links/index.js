@@ -1,9 +1,27 @@
 import Layout from '@/components/Layout'
+import LinkItem from '@/components/LinkItem'
+import {API_URL} from '@/config/index'
 
-export default function LinksPage() {
+export default function LinksPage({links}) {
     return (
         <Layout title='Übersicht'>
             <h1>Links</h1>
+            {links.length === 0 && <h3>Bisher noch keine Links vorhanden. :(</h3>}
+            {links.map(link => (
+                <LinkItem key={link.id} link={link} />
+            ))}
         </Layout>
     )
+}
+
+export async function getStaticProps(){
+
+    const res = await fetch(`${API_URL}/api/links`)
+    const links = await res.json()
+    //console.log(links) // this will be printed on terminal (server side)
+
+    return{
+        props:{links},
+        revalidate: 1
+    }
 }
