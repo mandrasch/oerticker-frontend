@@ -6,13 +6,29 @@ import Layout from '@/components/Layout'
 import { API_URL } from '@/config/index'
 import styles from '@/styles/Link.module.css'
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function EventPage({ link }) {
     //console.log(link);
     const router = useRouter() // react hook
     //console.log(router) 
 
-    const deleteEvent = (e) => {
+    const deleteEvent = async (e) => {
         console.log('delete')
+        if(confirm('Are you sure?')){
+            const res = await fetch(`${API_URL}/links/${link.id}`,{
+                method: 'DELETE',
+
+            })
+            const data = await res.json()
+
+            if(!res.ok){
+                toast.error('Something went wrong. '+data.message)
+            }else{
+                router.push('/links')
+            }
+        }
     }
 
     return (
@@ -20,7 +36,7 @@ export default function EventPage({ link }) {
 
             <div className={styles.link}>
                 <div className={styles.controls}>
-                    <Link href={`/events/edit/${link.slug}`}>
+                    <Link href={`/links/edit/${link.slug}`}>
                         <a><FaPencilAlt /> Bearbeiten</a>
                     </Link>
                     <a href="#" className={styles.delete} onClick={deleteEvent}>
@@ -29,37 +45,36 @@ export default function EventPage({ link }) {
                 </div>
 
                 <span>
-                    {link.date} at {link.time}
+                    {new Date(link.published_at).toLocaleString('de-AT')} by by {link.user != null ? link.user.name : 'Anonymes Eichhörnchen'}
                 </span>
 
-                <h2>{link.name}</h2>
+                <h2>{link.title}</h2>
 
                 <div className={styles.image}>
-                    <Image src={link.image ? link.image : '/images/eichkatzerl_cc0_own_photo.png'} layout='fill' objectFit='cover' objectPosition='center center' alt='' />
+                    <Image src={link.image ? link.image.formats.medium.url : '/images/eichkatzerl_cc0_own_photo.png'} layout='fill' objectFit='cover' objectPosition='center center' alt='' />
                 </div>
 
-                <h3>Performers:</h3>
-                <p>{link.performers}</p>
-                <h3>Description:</h3>
+                <h3>Beschreibung:</h3>
                 <p>{link.description}</p>
-                <h3>Venue: {link.venue}</h3>
-                <p>{link.address}</p>
 
-                <Link href='/events'>
+                <h3>URL:</h3>
+                <p>{link.url}</p>
+
+                <Link href='/links'>
                     <a className={styles.back}>
                         Zurück
                     </a>
                 </Link>
             </div>
 
-
+            <ToastContainer />
         </Layout>
     )
 }
 
 export async function getStaticProps({ params: { slug } }) {
     //console.log('slug: ' + slug);
-    const res = await fetch(`${API_URL}/api/links/${slug}/`)
+    const res = await fetch(`${API_URL}/links?slug=${slug}`)
     const links = await res.json()
     //console.log(links)
     return {
@@ -71,7 +86,7 @@ export async function getStaticProps({ params: { slug } }) {
 // we need this, because the build process doesn't know the paths to generate
 export async function getStaticPaths() {
 
-    const res = await fetch(`${API_URL}/api/links/`)
+    const res = await fetch(`${API_URL}/links/`)
     const links = await res.json()
     const paths = links.map(link => ({
         params: {

@@ -16,12 +16,12 @@ export default function LinksPage({links}) {
 
 export async function getStaticProps(){
 
-    const res = await fetch(`${API_URL}/api/links`)
+    const res = await fetch(`${API_URL}/links?_sort=published_at:DESC&_limit=2`)
     const links = await res.json()
     //console.log(links) // this will be printed on terminal (server side)
 
     return{
-        props:{links:links.slice(0,3)},
+        props:{links},
         revalidate: 1
     }
 }

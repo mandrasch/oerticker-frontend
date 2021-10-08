@@ -16,7 +16,7 @@ export default function LinksPage({links}) {
 
 export async function getStaticProps(){
 
-    const res = await fetch(`${API_URL}/api/links`)
+    const res = await fetch(`${API_URL}/links`)
     const links = await res.json()
     //console.log(links) // this will be printed on terminal (server side)
 
