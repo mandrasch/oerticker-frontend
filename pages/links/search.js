@@ -17,7 +17,7 @@ export default function SearchPage({links}) {
             ))}
         </Layout>
     )
-}
+} 
 
 export async function getServerSideProps({query:{term}}){
 

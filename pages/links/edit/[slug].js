@@ -1,11 +1,13 @@
 import { FaImage } from 'react-icons/fa'
 import Layout from '@/components/Layout'
+import Modal from '@/components/Modal'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Image from 'next/image'
 import { API_URL } from '@/config/index'
 import styles from '@/styles/Form.module.css'
+import ImageUpload from '@/components/ImageUpload'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,6 +21,8 @@ export default function EditLinkPage({ link }) {
     })
 
     const [imagePreview, setImagePreview] = useState(link.image ? link.image.formats.thumbnail.url : null)
+
+    const [showModal, setShowModal] = useState(null)
 
     const router = useRouter()
 
@@ -54,6 +58,14 @@ export default function EditLinkPage({ link }) {
         const { name, value } = e.target
         //console.log('Input changes', name, value)
         setValues({ ...values, [name]: value }) // overwrite value, spread operator
+    }
+
+    const imageUploaded = async (e) => {
+        console.log('uploaded')
+        const res = await fetch(`${API_URL}/links/${link.id}`)
+        const data = await res.json()
+        setImagePreview(data.image.formats.thumbnail.url)
+        setShowModal(false)
     }
 
     return (
@@ -108,8 +120,12 @@ export default function EditLinkPage({ link }) {
             }
 
             <div>
-                <button className='btn-secondary'><FaImage /> Hochladen</button>
+                <button className='btn-secondary' onClick={() => setShowModal(true)}><FaImage /> Hochladen</button>
             </div>
+            
+            <Modal show={showModal} onClose={() => setShowModal(false)}>
+                <ImageUpload linkId={link.id} imageUploaded={imageUploaded} />
+            </Modal>
 
         </Layout>
     )
