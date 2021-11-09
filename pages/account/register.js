@@ -33,6 +33,7 @@ export default function RegisterPage() {
         <Layout title="Registrierung">
             <div className={styles.auth}>
                 <h1><FaUser /> Registrierung</h1>
+                <p>Die Registrierung ist derzeit deaktiviert</p>
                 <ToastContainer />
                 <form onSubmit={handleSubmit}>
                     <div>
