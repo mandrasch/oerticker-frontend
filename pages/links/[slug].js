@@ -46,8 +46,6 @@ export default function EventPage({ link }) {
         <Link href="/links">
           <a className={styles.back}>Zurück</a>
         </Link>
-
-        <EventMap link={link} />
       </div>
 
       <ToastContainer />
