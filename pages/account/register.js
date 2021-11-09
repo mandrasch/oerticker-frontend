@@ -13,18 +13,20 @@ export default function RegisterPage() {
     const [password, setPassword] = useState('')
     const [passwordConfirm, setPasswordConfirm] = useState('')
 
-    const {register,error} = useContext(AuthContext)
+    const { register, error } = useContext(AuthContext)
+
+    useEffect(() => error && toast.error(error))
 
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        if(password !== passwordConfirm){
+        if (password !== passwordConfirm) {
             toast.error('Passwörter stimmen nicht überein')
             return
         }
 
         // call AuthContext
-        register({username, email,password, passwordConfirm})
+        register({ username, email, password, passwordConfirm })
     }
 
     return (
@@ -33,9 +35,9 @@ export default function RegisterPage() {
                 <h1><FaUser /> Registrierung</h1>
                 <ToastContainer />
                 <form onSubmit={handleSubmit}>
-                <div>
+                    <div>
                         <label htmlFor="username">
-                            Benutzer:in-Name 
+                            Benutzer:in-Name
                         </label>
                         <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
                     </div>
@@ -54,7 +56,7 @@ export default function RegisterPage() {
                     <div>
                         <label htmlFor="passwordConfirm">
                             Passwort-Bestätigung
-                        </label>    
+                        </label>
                         <input type="password" id="passwordConfirm" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} />
                     </div>
 

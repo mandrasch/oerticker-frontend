@@ -3,11 +3,16 @@ import LinkItem from '@/components/LinkItem'
 import {API_URL} from '@/config/index'
 
 export default function LinksPage({links}) {
+
+    console.log('links',links)
+    
     return (
         <Layout title='Übersicht'>
             <h1>Frische Links</h1>
-            {links.length === 0 && <h3>Bisher noch keine Links vorhanden. :(</h3>}
-            {links.map(link => (
+            { links.length }
+            {links.length == 0 && <h3>Bisher noch keine Links vorhanden. :(</h3>}
+
+            {links.length > 0 && links.map(link => (
                 <LinkItem key={link.id} link={link} />
             ))}
         </Layout>

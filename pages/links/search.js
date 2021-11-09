@@ -10,7 +10,7 @@ export default function SearchPage({links}) {
     return (
         <Layout title='Suchergebnisse'>
             <Link href='/links'>Zurück</Link>
-            <h1>Suchergebnisse für "{router.query.term}"</h1>
+            <h1>Suchergebnisse für &quot;{router.query.term}&quot;</h1>
             {links.length === 0 && <h3>Bisher noch keine Links vorhanden. :(</h3>}
             {links.map(link => (
                 <LinkItem key={link.id} link={link} />
